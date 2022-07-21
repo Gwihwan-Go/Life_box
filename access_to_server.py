@@ -31,7 +31,7 @@ def login(Id, password,driver):
 ##For github actions##
 try :
     if os.environ['GITHUB_ACTIONS'] :
-        username = os.environ['client_id']
+        username = os.environ['username']
         password = os.environ['password']
 ##For github actions##
 except :
