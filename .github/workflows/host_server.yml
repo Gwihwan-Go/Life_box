@@ -26,7 +26,10 @@ jobs:
     - name: Checking Process2
       run: echo we are ready, and going to host server
     - name: Host server
-      run: python onenote_export.py --select 'Diary'
+      env:
+        client_id: ${{ secrets.client_id }}
+        secret: ${{ secrets.secret }}
+      run: python onenote_export.py --select 'Diary' -g True
     - name: Checking Process3
       run: echo we are about to connect to server
     - name: Connect to server
