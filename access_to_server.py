@@ -6,7 +6,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 import time
-import yaml
 import os
 def login(Id, password,driver):
 
@@ -36,6 +35,7 @@ try :
         password = os.environ['password']
 ##For github actions##
 except :
+    import yaml
     with open('config.yaml') as f:
         config = yaml.safe_load(f)
     f.close()
