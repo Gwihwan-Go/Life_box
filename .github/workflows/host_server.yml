@@ -24,10 +24,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r /requirements.txt
     - name: Checking Process2
-    - run: echo we are ready, and going to host server
+      run: echo we are ready, and going to host server
     - name: Host server
-    - run: python onenote_export.py --select 'Diary'
+      run: python onenote_export.py --select 'Diary'
     - name: Checking Process3
-    - run: echo we are about to connect to server
+      run: echo we are about to connect to server
     - name: Connect to server
-    - run : python access_to_server.py
+      run : python access_to_server.py
