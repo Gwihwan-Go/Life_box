@@ -29,7 +29,7 @@ jobs:
       env:
         client_id: ${{ secrets.client_id }}
         secret: ${{ secrets.secret }}
-      run: python onenote_export.py --select 'Diary' -g True
+      run: python onenote_export.py --select 'Diary'
     - name: Checking Process3
       run: echo we are about to connect to server
     - name: Connect to server
