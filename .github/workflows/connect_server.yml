@@ -25,6 +25,6 @@ jobs:
         pip install selenium webdriver_manager
     - name: Connect to server
       env:
-        client_id: ${{ secrets.username }}
-        secret: ${{ secrets.password }}
+        username: ${{ secrets.username }}
+        password: ${{ secrets.password }}
       run: python access_to_server.py
