@@ -1,0 +1,36 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '5 * * * *'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checking Process1
+    - run: echo Start github actions
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name : Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r /requirements.txt
+    - name: Checking Process2
+    - run: echo we are ready, and going to host server
+    - name: Host server
+      run: |
+        python onenote_export.py --select 'Diary'
+    - name: Checking Process3
+    - run: echo we are about to connect to server
+    - name: Connect to server
+        python access_to_server.py
