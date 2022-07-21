@@ -7,7 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 import time
 import yaml
-
+import os
 def login(Id, password,driver):
 
     #input : Id and password of user, and driver which is webdriver object
@@ -29,10 +29,18 @@ def login(Id, password,driver):
     click_to_dismiss.click()
 
 
-
-with open('config.yaml') as f:
-    config = yaml.safe_load(f)
-f.close()
+##For github actions##
+try :
+    if os.environ['GITHUB_ACTIONS'] :
+        username = os.environ['client_id']
+        password = os.environ['password']
+##For github actions##
+except :
+    with open('config.yaml') as f:
+        config = yaml.safe_load(f)
+    f.close()
+    username = config['username']
+    password = config['password']
 
 option = webdriver.ChromeOptions()
 option.add_argument('headless')
@@ -41,6 +49,6 @@ url="http://127.0.0.1:5000/login"
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=option)
 print(f"accessing to the server={url}")
 driver.get(url)
-login(config['username'],config['password'],driver)
+login(username,password,driver)
 
 print(f"server access completed")
