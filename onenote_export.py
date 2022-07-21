@@ -8,7 +8,6 @@ from fnmatch import fnmatch
 from html.parser import HTMLParser
 from pathlib import Path
 from xml.etree import ElementTree
-
 import click
 import flask
 import msal
@@ -27,14 +26,15 @@ app.secret_key = os.urandom(16)
 
 
 ##For github actions##
-if app.config['isgithub'] :
-    application = msal.ConfidentialClientApplication(
-        os.environ['client_id'],
-        authority=authority_url,
-        client_credential=os.environ['secret']
-    )
+try :
+    if os.environ['GITHUB_ACTIONS'] :
+        application = msal.ConfidentialClientApplication(
+            os.environ['client_id'],
+            authority=authority_url,
+            client_credential=os.environ['secret']
+        )
 ##For github actions##
-else :
+except :
     with open('config.yaml') as f:
         config = yaml.safe_load(f)
 
@@ -258,12 +258,10 @@ def main_logic():
                    '`-p mynotebook` or `-p mynotebook/mysection/mynote`. Wildcards are supported: '
                    '`-p mynotebook/*/mynote`.')
 @click.option('-o', '--outdir', default='output', help='Path to output directory.')
-@click.option('-g', '--isgithub', default=False, help='If it is true, the app will use of os.environ params')
 
-def main_command(select, outdir, isgithub):
+def main_command(select, outdir):
     app.config['select_path'] = [x for x in select.split('/') if x]
     app.config['output_path'] = Path(outdir)
-    app.config['isgithub'] =isgithub
     app.run()
 
 
