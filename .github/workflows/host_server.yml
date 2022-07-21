@@ -23,8 +23,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Checking Process2
-      run: echo we are ready, and going to host server
     - name: Host server
       env:
         client_id: ${{ secrets.client_id }}
