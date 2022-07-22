@@ -114,4 +114,8 @@ dmypy.json
 output/
 Diary/
 config.*
-.*
+.vscode/
+.python-
+results/
+inputs/
+develop.ipynb

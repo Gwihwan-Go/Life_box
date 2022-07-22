@@ -52,3 +52,41 @@ notes you might eventually see messages like this in the terminal: "Too many req
 trying again." This is not a problem, but it means the entire process can take a while. Also, the login 
 session can expire after a while, which results in a TokenExpiredError. If this happens, simply reload 
 `http://localhost:5000` and the script will continue (skipping the files it already downloaded).
+
+
+### Run code instructions
+
+1. After finishing making app on Azure.
+2. install dependencies.
+```bash
+pip install -r requirements.txt
+```
+3. Make 'config.yaml' file, and config 4 variables
+   - client_id
+   - secret
+   - username(Azure id)
+   - password(Azure pwd)
+3. run the 'onenote_export.py' script with options.
+
+--select option means the section of onenote.
+In my case, I choose onenote section named 'Diary'.
+
+--outdir option indicates the location to save onenote notebooks at.
+
+```python
+python onenote_export.py --select 'Diary' --outdir ./inputs 
+```
+4. Open another terminal, and run the 'access_to_server.py' script.
+5. We finished loading the Onenote notebooks in our workspace.
+6. Finally, run 'overview.py' with options.
+
+--day options indicate the data until a day before the day.
+
+--period option(int) means how long period it will parse.
+```python
+python overview.py --day '7/25' --period 7
+```
+7. Upload the result to github.
+```python
+python update_gist.py
+```

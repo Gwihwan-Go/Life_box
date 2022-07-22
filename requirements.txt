@@ -5,3 +5,5 @@ pathvalidate
 pyyaml
 requests_oauthlib
 selenium
+bs4
+gistyc
