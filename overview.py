@@ -47,4 +47,4 @@ with open(output_path, 'w') as f :
     f.write(f"My life Overview in period of {_start_day.month}/{_start_day.day} ~ {end_day.month}/{end_day.day} [averaged]\n")
     f.writelines(file_content)
 f.close()
-print(f"file has successfully saved at {output_path}")
+print(f"{_start_day.month}/{_start_day.day} ~ {end_day.month}/{end_day.day} records has successfully saved at {output_path}")

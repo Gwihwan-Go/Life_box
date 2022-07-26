@@ -22,4 +22,4 @@ gist_api = gistyc.GISTyc(auth_token=auth_token)
 # Update the GIST based on the GISTs ID
 response_update_data = gist_api.update_gist(file_name=file_to_upload_path,
                                             gist_id=gist_id)
-print(f"gist has successfully updated at {response_update_data['url']}")
+print(f"gist has successfully updated to {response_update_data['url']}")

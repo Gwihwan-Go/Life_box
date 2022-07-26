@@ -47,7 +47,7 @@ option.add_argument('headless')
 url="http://127.0.0.1:5000/login"
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=option)
-print(f"accessing to the server={url}")
+print(f"accessing to the server {url}")
 driver.get(url)
 login(username,password,driver)
 
