@@ -42,12 +42,14 @@ def get_schedule(docs_path) :
     f = codecs.open(docs_path, 'r', 'utf-8')
     document= BeautifulSoup(f.read(),"html.parser")
     table = document.find('table')
-    rows = table.find_all('tr')
-
-    for row in rows:
-        cols = row.find_all('td')
-        cols = [ele.text.strip() for ele in cols]
-        result.append([ele for ele in cols if ele]) # Get rid of empty values
+    
+    print('table', table)
+    if table is not None :
+        rows = table.find_all('tr')
+        for row in rows:
+            cols = row.find_all('td')
+            cols = [ele.text.strip() for ele in cols]
+            result.append([ele for ele in cols if ele]) # Get rid of empty values
     title = document.find('title').get_text()
     title = title.split(' ')[-1]
     result.insert(0, [title,'sleep'])
