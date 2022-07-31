@@ -44,7 +44,7 @@ def get_schedule(docs_path) :
     table = document.find('table')
     
     print('table', table)
-    if table is not None :
+    if table is not None : #If there is no table in a notebook.
         rows = table.find_all('tr')
         for row in rows:
             cols = row.find_all('td')
