@@ -19,6 +19,8 @@ data = defaultdict(None)
 end_day = datetime.strptime(args.day,"%m/%d") - timedelta(days=1)
 std_time = timedelta(days=args.period)
 start_day = end_day - std_time + timedelta(days=1)
+now = datetime.now()
+
 _start_day=start_day
 while start_day <= end_day :
     notebook_path = search_by_date(2022,start_day.month,start_day.day,file_path)
@@ -43,8 +45,13 @@ processed_content = [preprocess_data(key, averaged, std_time/args.period) for ke
 file_content = '\n'.join((generate_file_content_line(_)
                         for _ in processed_content))
 
+
+nowstring = now.strftime("%A, %d %b, %H:%M")
+footer = f"Last refresh: {nowstring} KST"
 with open(output_path, 'w') as f :
     f.write(f"My life Overview in period of {_start_day.month}/{_start_day.day} ~ {end_day.month}/{end_day.day} [averaged]\n")
     f.writelines(file_content)
+    f.write('\n')
+    f.write(footer)
 f.close()
 print(f"{_start_day.month}/{_start_day.day} ~ {end_day.month}/{end_day.day} records has successfully saved at {output_path}")
