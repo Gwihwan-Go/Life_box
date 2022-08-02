@@ -4,7 +4,7 @@ import codecs
 from datetime import datetime, timedelta
 import math
 import categorize
-
+from pytz import timezone
 def search_by_date(year,month,date,dir) :
     """
     choose notebook which matched month/day varaibles.
@@ -43,7 +43,6 @@ def get_schedule(docs_path) :
     document= BeautifulSoup(f.read(),"html.parser")
     table = document.find('table')
     
-    print('table', table)
     if table is not None : #If there is no table in a notebook.
         rows = table.find_all('tr')
         for row in rows:
@@ -166,3 +165,16 @@ def cal_unknown(items, whole) :
 def preprocess_data(key, dic, whole) :
     '''sleep : time ===> 'sleep', 'time', 'percentage'''
     return {'name' : key, 'text' : _days_hours_minutes(dic[key]), 'percent' : _percent_time(dic[key], whole)}
+
+def time_info(location='Asia/Seoul') :
+    """
+    input :
+        location(default = 'america')
+    output :
+        time info
+        ex) Wednesday, 03 Aug, 01:41 KST
+    
+    """
+    now = datetime.now(timezone(location))
+    
+    return now.strftime("%A, %d %b, %H:%M %Z")
