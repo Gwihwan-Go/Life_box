@@ -37,8 +37,9 @@ while start_day <= end_day :
 
     start_day+=timedelta(days=1)
 
-data['🤔no_record']=cal_unknown(data, std_time)
+# data['🤔no_record']=cal_unknown(data, std_time)
 sorted_data = dict(sorted(list(data.items()), key=lambda x : x[1], reverse=True))
+sorted_data['🤔no_record']=cal_unknown(data, std_time)
 averaged = {key:(value/args.period) for key,value in sorted_data.items()}
 processed_content = [preprocess_data(key, averaged, std_time/args.period) for key in averaged.keys()]
 file_content = '\n'.join((generate_file_content_line(_)
