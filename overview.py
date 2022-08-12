@@ -9,10 +9,13 @@ parser.add_argument("-d", "--day", type=str,
     default=f"{datetime.now().month}/{datetime.now().day}")       
 parser.add_argument("-p", "--period", 
     type=int,help="how long do you want to know?", 
-    default=7)           
+    default=7)        
+parser.add_argument("-o", "--out", 
+    type=str,help="output directory to store the result", 
+    default="Overview my life")      
 args = parser.parse_args()
 
-output_path = "./results/Overview my life"
+output_path = "./results"+"/"+args.out
 file_path = "./inputs/Diary"
 data = defaultdict(None)
 
