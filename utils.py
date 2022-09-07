@@ -94,10 +94,8 @@ def cal_hours(raw_data, dic) :
         prev_end = end ##if "-17:30" not "15:30-17:30" in this case, we need to save prev_end time
         ###############read time - handling exception##############
 
+        atv=categorize.categorize(atv)  ##categroize dictionary key to more representative ones
         ####### save data zone ########
-        key_save_path = "resources/key_list.json"
-        key_list=categorize.load(key_save_path)
-        atv=categorize.search(atv, key_list) ##categroize dictionary key to more representative ones
 
         if atv in dic.keys() :
             dic[atv]+=hour ##add hours

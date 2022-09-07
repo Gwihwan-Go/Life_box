@@ -1,4 +1,7 @@
 import json
+
+keylist_save_path = "resources/key_list.json"
+
 def load(save_path) :
     """
     load key_list from save_path
@@ -20,6 +23,7 @@ def search(target,key_list) :
         key_list(dict) : looks like {key : [word1, word2, ...], key2 : [ ...]}
     output :
         result(str) : changed word ex) 🌙sleep, 🍔food
+        None : if target isn't exist in key_list
     """
     target = target.lower()
     result = target
@@ -27,7 +31,10 @@ def search(target,key_list) :
         if target in word_list :
             result = key
             break
-    return result   
+    if result != target :  
+        return result   
+    else :
+        return None
 
 
 ## add new key
@@ -72,3 +79,18 @@ def save(key_list, save_path) :
     # close file
     f.close()
     print(f"file has successfuly saved at {save_path}")
+
+def categorize(word) :
+    """
+    algorithm of categorizing words
+    input :
+        word(str) : target word
+    output :
+        category(str) : representation of the word
+    """
+    key_list=load(keylist_save_path)
+    category=search(word, key_list) ##categroize dictionary key to more representative ones
+    if category is None :
+        print(f"element : {word} doesn't exist in the key list")
+        category = 'others'
+    return category
