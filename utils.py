@@ -86,8 +86,8 @@ def cal_hours(raw_data, dic) :
 
         ###############calculate hours##############
         hour = end_time-start_time
-        if hour < timedelta(0) : ##if 2-12 =? 
-            hour+=timedelta(hours=12)
+        while hour < timedelta(0) : ##if 11 - 1 2 3 =?
+            hour+=timedelta(hours=12) # 23 - 1 2 3 =?
         ###############calculate hours##############
         
         ###############read time - handling exception##############

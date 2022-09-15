@@ -79,8 +79,21 @@ def save(key_list, save_path) :
     # close file
     f.close()
     print(f"file has successfuly saved at {save_path}")
-
-def categorize(word) :
+def preprocess(words) :
+    """
+    algorithm of preprocessing words into core meaningful word
+    input :
+        words(str) : target words
+    output :
+        category(str) : representation of the word
+    """
+    ###############
+    ##############
+    #####NEED######
+    ##############
+    ############
+    return words
+def categorize(words) :
     """
     algorithm of categorizing words
     input :
@@ -89,6 +102,7 @@ def categorize(word) :
         category(str) : representation of the word
     """
     key_list=load(keylist_save_path)
+    word = preprocess(words)
     category=search(word, key_list) ##categroize dictionary key to more representative ones
     if category is None :
         print(f"element : {word} doesn't exist in the key list")
