@@ -48,7 +48,10 @@ url="http://127.0.0.1:5000/login"
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=option)
 print(f"accessing to the server {url}")
-driver.get(url)
+try :
+    driver.get(url)
+except :
+    print("##################\nUNABLE TO ACCESS TO SERVER\n##################")
 login(username,password,driver)
 
 print(f"server access completed")
