@@ -55,6 +55,37 @@ def get_schedule(docs_path) :
     
     return result
 
+def interpret_hours(time, prev_info=None) :
+    """
+    interpret written time information and handle possible errors.
+    First, It converts written str-format time to datetime module 
+    Second, calculate how much times.
+    Finally, return the results.
+    input :
+        time(str) : written time format, 
+                    it could be [1-48] : [0-59].
+                    In case of start time, it is allowed to write nothing. 
+                    In this case, this function brings up prev_information to fill the start time.
+        prev_info(datetime.module) : previous end time, in case of unwritten start time
+    output :
+        results(datetime.datetime) : correct and unified format of time.               
+    """
+    if len(time.strip())<1 : ##if no info, ex) "-17:30" not "15:30-17:30",
+        return prev_info
+
+    h_m_li = time.split(':') #[hour, min]
+
+    while len(h_m_li) < 2 : ## no hour info, ex) not 8:55- , 55-
+        h_m_li.append(h_m_li[0])
+        h_m_li[0] = str(prev_info.hour) ## fill the hour info with prev info
+    if int(h_m_li[0]) > 23 : 
+        ##if user write 24:00 or over, datetime   can't interpret over than 23
+        h_m_li[0] = str(int(h_m_li[0])-12) 
+
+    results = datetime.strptime(":".join(h_m_li), "%H:%M")
+    
+    return results
+
 def cal_hours(raw_data, dic) :
     """
     input 
@@ -64,24 +95,12 @@ def cal_hours(raw_data, dic) :
         result(dict) : dictionary [activity : the hour of time]
 
     """
-    
+    prev_end=None
     for tm, atv in [i for i in raw_data if len(i)>0] :
         ###############read time##############
         start, end = tm.split('-')
-        
-        if len(start.strip())<1 : ##if "-17:30" not "15:30-17:30"
-            start = prev_end
-
-        if int(start.split(':')[0]) > 23 : ##if user write 24:00 or over
-            h,m=start.split(':')
-            start_time = datetime.strptime(":".join([str(int(h)-12),m]), "%H:%M")
-        else :
-            start_time = datetime.strptime(start, "%H:%M")
-        if int(end.split(':')[0]) > 23 :
-            h,m=end.split(':')
-            end_time = datetime.strptime(":".join([str(int(h)-12),m]), "%H:%M")
-        else :
-            end_time = datetime.strptime(end, "%H:%M")
+        start_time = interpret_hours(start, prev_end)
+        end_time = interpret_hours(end, start_time)
         ###############read time##############
 
         ###############calculate hours##############
@@ -91,9 +110,8 @@ def cal_hours(raw_data, dic) :
         ###############calculate hours##############
         
         ###############read time - handling exception##############
-        prev_end = end ##if "-17:30" not "15:30-17:30" in this case, we need to save prev_end time
+        prev_end = end_time ##if "-17:30" not "15:30-17:30" in this case, we need to save prev_end time
         ###############read time - handling exception##############
-
         atv=categorize.categorize(atv)  ##categroize dictionary key to more representative ones
         ####### save data zone ########
 
