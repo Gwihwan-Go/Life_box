@@ -112,13 +112,13 @@ def cal_hours(raw_data, dic) :
         ###############read time - handling exception##############
         prev_end = end_time ##if "-17:30" not "15:30-17:30" in this case, we need to save prev_end time
         ###############read time - handling exception##############
-        atv=categorize.categorize(atv)  ##categroize dictionary key to more representative ones
+        cate_atv=categorize.categorize(atv)  ##categroize dictionary key to more representative ones
         ####### save data zone ########
-
-        if atv in dic.keys() :
-            dic[atv]+=hour ##add hours
+        print(f"{cate_atv}({atv}) : {hour}")
+        if cate_atv in dic.keys() :
+            dic[cate_atv]+=hour ##add hours
         else :
-            dic[atv]=hour ##init with hours
+            dic[cate_atv]=hour ##init with hours
 
     return dic
 def generate_file_content_line(raw_data: dict) -> str:

@@ -25,6 +25,8 @@ start_day = end_day - std_time + timedelta(days=1)
 
 _start_day=start_day
 while start_day <= end_day :
+    print("#######################")
+    print(f"searching for {start_day.month}/{start_day.day} data")
     notebook_path = search_by_date(2022,start_day.month,start_day.day,file_path)
     if notebook_path is not None :
         notebook_path += '/main.html'
