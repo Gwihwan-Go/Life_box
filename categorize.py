@@ -82,17 +82,20 @@ def save(key_list, save_path) :
 def preprocess(words) :
     """
     algorithm of preprocessing words into core meaningful word
+    if words includes '/' -> split it and give list
     input :
         words(str) : target words
     output :
-        category(str) : representation of the word
+        category(list consisted of tr) : representation of the word
     """
+    split_symbol = '/' 
+    
     ###############
     ##############
     #####NEED######
     ##############
     ############
-    return words
+    return words.split(split_symbol)
 def categorize(words) :
     """
     algorithm of categorizing words
@@ -102,9 +105,10 @@ def categorize(words) :
         category(str) : representation of the word
     """
     key_list=load(keylist_save_path)
-    word = preprocess(words)
-    category=search(word, key_list) ##categroize dictionary key to more representative ones
-    if category is None :
-        print(f"element : {word} doesn't exist in the key list")
-        category = 'others'
-    return category
+    words = preprocess(words)
+    for idx in range(len(words)) :
+        words[idx]=search(words[idx], key_list) ##categroize dictionary key to more representative ones
+        if words[idx] is None :
+            print(f"element : {words[idx]} doesn't exist in the key list")
+            words[idx] = 'others'
+    return words
