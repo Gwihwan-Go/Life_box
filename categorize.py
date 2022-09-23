@@ -107,8 +107,11 @@ def categorize(words) :
     key_list=load(keylist_save_path)
     words = preprocess(words)
     for idx in range(len(words)) :
-        words[idx]=search(words[idx], key_list) ##categroize dictionary key to more representative ones
-        if words[idx] is None :
+        
+        cate = search(words[idx], key_list) ##categroize dictionary key to more representative ones
+        if cate is not None :
+            words[idx]=cate
+        else :
             print(f"element : {words[idx]} doesn't exist in the key list")
             words[idx] = 'others'
     return words
