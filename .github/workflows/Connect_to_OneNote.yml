@@ -27,4 +27,9 @@ jobs:
       env:
         client_id: ${{ secrets.client_id }}
         secret: ${{ secrets.secret }}
-      run: python onenote_export.py --select 'Diary' ./github
+        authTenant: ${{ secrets.authTenant }}
+        auth_token: ${{ secrets.auth_token }}
+        gist_id: ${{ secrets.gist_id }}
+        password: ${{ secrets.password }}
+        username: ${{ secrets.username }}
+      run: python main.py

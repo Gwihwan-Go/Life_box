@@ -1,53 +1,50 @@
 # Run code instructions
-### This repo hasn't been completed
+
+
 This repository refered [Onenote_export Repo](!https://github.com/Danmou/onenote_export), [gistyc Repo](!https://github.com/ThomasAlbin/gistyc), and[Productive-box Repo](!https://github.com/GwiHwan-Go/productive-box).
 
 
 1. Resister your app on Azure
+
+
    1-1. Go to https://aad.portal.azure.com/ and log in with your Microsoft account.
+
+
    1-2. Select "Azure Active Directory" and then "App registrations" under "Manage".
+
+
    1-3. Select "New registration". Choose any name, set "Supported account types" to "Accounts in any 
       organizational directory and personal Microsoft accounts" and under "Redirect URI", select Web 
       and enter `http://localhost:5000/getToken`. Register.
+
+
    1-4. Copy "Application (client) ID" and paste it as `client_id` in `config.yaml`.
-   1-5. Select "Certificates & secrets" under "Manage". Press "New client secret", choose a name and 
-      confirm.
+
+
+   1-5. Select "Certificates & secrets" under "Manage". Press "New client secret", choose a name and confirm.
+
+
    1-6. Copy the client secret and paste it as `secret` in `config.yaml`.
-   1-7. Select "API permissions" under "Manage". Press "Add a permission", scroll down and select OneNote, 
-      choose "Delegated permissions" and check "Notes.Read" and "Notes.Read.All". Press "Add 
-      permissions".
+
+
+   1-7. Select "API permissions" under "Manage". Press "Add a permission", scroll down and select OneNote, choose "Delegated permissions" and check "Notes.Read" and "Notes.Read.All". Press "Add permissions".
+
+
 2. install dependencies.
 ```bash
 pip install -r requirements.txt
 ```
+
+
 3. Make 'config.yaml' file, and config 4 variables
    - client_id
    - secret
    - username(Azure id)(!optional)
    - password(Azure pwd)(!optional)
-3. run the 'onenote_export.py' script with options.
 
---select option means the section of onenote.
-In my case, I choose onenote section named 'Diary'.
 
---outdir option indicates the location to save onenote notebooks at.
+3. run the ```python main.py```
 
-```python
-python onenote_export.py --select 'Diary' --outdir ./inputs 
-```
-4. Open another terminal, and run the 'access_to_server.py' script.
-5. We finished loading the Onenote notebooks in our workspace.
-6. Finally, run 'overview.py' with options.
-
---day options indicate the data until a day before the day.
-
---period option(int) means how long period it will parse.
-```python
-python overview.py --day '7/25' --period 7
-```
-7. Upload the result to github.
-```python
-python update_gist.py
 ```
 
 8. Make sure you have Python 3.8 (or newer)

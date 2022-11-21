@@ -7,7 +7,6 @@ from html.parser import HTMLParser
 from xml.etree import ElementTree
 from pathvalidate import sanitize_filename
 
-graph_url = 'https://graph.microsoft.com/v1.0/'
 def get_json(graph_client, url, params=None, indent=0):
     values = []
     next_page = url
@@ -45,42 +44,58 @@ def get(graph_client, url, params=None, indent=0):
 def get_notebooks(graph_client, select=None, indent=0):
     pass
 
-def pop_latest_pages(graph_client, sections, select, target):
+def sort_by_name(items):
+    target_pages = [item for item in items if skip_page(item["title"])==False]
+    non_target_pages = [item for item in items if skip_page(item["title"])]
+    target_pages = sorted(target_pages, key=lambda k: int(k['title'].split()[0]))
+    return non_target_pages + target_pages
+
+def pop_latest_pages(graph_client, sections, select, period_range):
 
     count = 0
+    ndata=0
     result={}
     #Iterate over the reversed sections 
-    while count < target and len(sections) > 0:
+    end_day = period_range[-1]
+    start_day = period_range[0]
+    while count < end_day and len(sections) > 0:
         section = sections.pop()
         indent_print(1, section["displayName"])
         result[section["displayName"]] = {} # Create a dictionary for the section
         pages = get_json(graph_client, section['pagesUrl'])
         pages, select = filter_items(pages, select, 'pages', 2)
-        ## sort pages
-        ## show attributes pages objective
-        ## show attributes pages title
-        ## show attributes pages lastModifiedDateTime
-
 
         indent_print(2,f"you got {len(pages)} pages")
-        pages = sorted(pages, key=lambda k: k['lastModifiedDateTime'])
+
+        pages = sort_by_name(pages)
+        # pages = sorted(pages, key=lambda k: k['lastModifiedDateTime'])
+        #pages = sorted(pages, key=lambda k: k['createdDateTime'])
 
         # Iterate over the reversed pages
-        while count < target and len(pages) > 0:
+        while count < end_day and len(pages) > 0:
             ## sort pages by its name, reversed
             page = pages.pop() 
-            if skip_page(page["title"]) :
+
+            if skip_page(page["title"]) : # not the Diary page
                 indent_print(3, f"skipping {page['title']}")
                 continue
-            indent_print(3, f"Collecting {page['title']}")
-            response = get(graph_client, page['contentUrl'], indent=3)
-            result[section["displayName"]][page["title"]] = ''
-            if response is not None:
-                result[section["displayName"]][page["title"]] = response.text
+            if count < start_day : # not in the period range
+                indent_print(3, f"not in the period range {page['title']}")
                 count+=1
+                continue
 
+            result[section["displayName"]][page["title"]]  = get_page(graph_client, page, 3)
+            count+=1
+            ndata+=1
+
+    print(f"Collected over {ndata} pages")
     return result
-    
+
+def get_page(graph_client, page, select=None, indent=0):
+    indent_print(indent, f"Collecting {page['title']}")
+    response = get(graph_client, page['contentUrl'], indent=indent)
+    return response.text
+
 def get_section(graph_client, section, select=None, indent=1):
 
     result = {}
@@ -97,10 +112,7 @@ def get_section(graph_client, section, select=None, indent=1):
     
     return result
 
-def get_page(graph_client, page, select=None, indent=0):
-    indent_print(indent, page['title'])
-    response = get(graph_client, page['contentUrl'], indent=indent+1)
-    return response.text
+
 
 def download_attachments(graph_client, content, out_dir, indent=0):
     image_dir = out_dir / 'images'

@@ -1,61 +1,47 @@
-from utils import *
-from collections import defaultdict
 import argparse
+from datetime import timedelta, datetime
+from utils.html_parser import *
+from utils.utils import *
+from utils.get_onenote import get_onenote
+import yaml
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-d", "--day", type=str, 
-    help="It will get the data until a day before the day, 7/27 for 7/20-7/26",
-    action="store", 
-    default=f"{datetime.now().month}/{datetime.now().day}")       
-parser.add_argument("-p", "--period", 
-    type=int,help="how long do you want to know?", 
-    default=7)        
-parser.add_argument("-o", "--out", 
-    type=str,help="output directory to store the result", 
-    default="Overview my life")      
-args = parser.parse_args()
+if __name__ == "__main__" :
 
-output_path = "./results"+"/"+args.out
-file_path = "./inputs/Diary"
-data = defaultdict(None)
+    try :
+        if os.environ['GITHUB_ACTIONS'] :
+            config = os.environ
+    ##For github actions##
+    except :
+        with open('config.yaml') as f:
+            config = yaml.safe_load(f)
 
-end_day = datetime.strptime(args.day,"%m/%d") - timedelta(days=1)
-std_time = timedelta(days=args.period)
-start_day = end_day - std_time + timedelta(days=1)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--end_day", type=str, 
+        help="It will get the data until a day before the day, 7/27 for 7/20-7/26",
+        action="store", 
+        default=f"{(datetime.now() - timedelta(days = 1)).month}/{(datetime.now() - timedelta(days = 1)).day}") #default is yesterday 
+    parser.add_argument("-p", "--period", 
+        type=int,help="how long do you want to know?", 
+        default=7)        
+    parser.add_argument("-o", "--out", 
+        type=str,help="output directory to store the result", 
+        default="overview")      
+    args = parser.parse_args()
 
-_start_day=start_day
-while start_day <= end_day :
-    print("#######################")
-    print(f"searching for {start_day.month}/{start_day.day} data")
-    notebook_path = search_by_date(2022,start_day.month,start_day.day,file_path)
-    if notebook_path is not None :
-        notebook_path += '/main.html'
-        data = cal_hours(get_schedule(notebook_path), data) #add new data to data
+    output_path = args.out
+    target_notebook_names = ['Diary']
     
-    print("#######################")
-    print(f"suceessfully recieved {start_day.month}/{start_day.day} data")
-    processed_content = [preprocess_data(key, data, std_time) for key in data.keys()]
+    # collect onenote data based on args
+    period = calculate_start_end_day(args.end_day, args.period)
+    onenote_result = get_onenote(config, period, target_notebook_names=target_notebook_names)
+    # parse data from onenote script
+    time_data = contents_to_organized_dict(onenote_result, target_notebook_names)
+    time_data['🤔no_record']=cal_unknown(time_data, timedelta(days=args.period))
+    averaged = {key:(value/args.period) for key,value in time_data.items()}
+    # data to text format and save
+    processed_content = [preprocess_data(key, averaged, timedelta(days=1)) for key in averaged.keys()]
     file_content = '\n'.join((generate_file_content_line(_)
-                        for _ in processed_content))
-    print(file_content)
-    print("#######################")
+                            for _ in processed_content))
 
-    start_day+=timedelta(days=1)
-
-# data['🤔no_record']=cal_unknown(data, std_time)
-sorted_data = dict(sorted(list(data.items()), key=lambda x : x[1], reverse=True))
-sorted_data['🤔no_record']=cal_unknown(data, std_time)
-averaged = {key:(value/args.period) for key,value in sorted_data.items()}
-processed_content = [preprocess_data(key, averaged, std_time/args.period) for key in averaged.keys()]
-file_content = '\n'.join((generate_file_content_line(_)
-                        for _ in processed_content))
-
-
-footer = f"Last refresh: {time_info('Asia/Seoul')}"
-with open(output_path, 'w') as f :
-    f.write(f"My life Overview in period of {_start_day.month}/{_start_day.day} ~ {end_day.month}/{end_day.day} [averaged]\n")
-    f.writelines(file_content)
-    f.write('\n')
-    f.write(footer)
-f.close()
-print(f"{_start_day.month}/{_start_day.day} ~ {end_day.month}/{end_day.day} records has successfully saved at {output_path}")
+    write_text_file(file_content, period, output_path)
+    update_gist(output_path, config['gist_id'], config['auth_token'])

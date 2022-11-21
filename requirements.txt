@@ -1,2 +1,8 @@
 msal
+bs4 
 requests_oauthlib
+gistyc
+oauthlib
+PyYAML
+xlrd
+urllib3
