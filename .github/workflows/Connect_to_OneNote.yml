@@ -12,7 +12,7 @@ on:
     - cron: '5 * * * *'
 jobs:
   build:
-    runs-on: linux
+    runs-on: ${{ github.actor }} is running out GitHub Actions
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
