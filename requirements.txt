@@ -6,3 +6,5 @@ oauthlib
 PyYAML
 xlrd
 urllib3
+pytz
+pathvalidate
