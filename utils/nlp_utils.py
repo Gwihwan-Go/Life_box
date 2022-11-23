@@ -1,3 +1,5 @@
+#This file deals with the language data
+
 import json
 
 keylist_save_path = "resources/key_list.json"
@@ -79,23 +81,48 @@ def save(key_list, save_path) :
     # close file
     f.close()
     print(f"file has successfuly saved at {save_path}")
+
 def preprocess(words) :
     """
     algorithm of preprocessing words into core meaningful word
     if words includes '/' -> split it and give list
+
+    correct spelling of words
+
     input :
-        words(str) : target words
+        words(str) : target words, may include '/'
     output :
-        category(list consisted of tr) : representation of the word
+        words(list) : list of words
     """
     split_symbol = '/' 
-    
     ###############
     ##############
     #####NEED######
     ##############
     ############
-    return words.split(split_symbol)
+    return [correct_word(word) \
+            for word in words.split(split_symbol)] #correct spelling of words
+def correct_word(word) :
+    """
+    algorithm of preprocessing words into core meaningful word
+    if words includes '/' -> split it and give list
+
+    correct spelling of words
+
+    input :
+        word(str) : target words
+    output :
+        word(str) : corrected word
+    """
+    from textblob import TextBlob
+
+    if len(word) > 0 :
+        word = TextBlob(word).correct()
+    else : #if word is empty
+        word = 'others'
+
+    return word
+    
 def categorize(words) :
     """
     algorithm of categorizing words
@@ -115,3 +142,6 @@ def categorize(words) :
             print(f"element : {words[idx]} doesn't exist in the key list")
             words[idx] = 'others'
     return words
+
+if __name__ == "__main__" :
+    print(categorize('stdy/naap/lanch'))

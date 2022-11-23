@@ -1,8 +1,9 @@
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from utils.utils import add_dictionary
-from utils.categorize import categorize
+from utils.nlp_utils import categorize
 from collections import defaultdict
+
 def collect_table_content(content) :
     """
     input 
@@ -78,6 +79,7 @@ def interpret_table_contents(raw_data) :
 
     prev_end=None
     dic = defaultdict(timedelta)
+    
     for tm, atv in [i for i in raw_data if len(i)>0] :
         ###############read time##############
         start, end = tm.split('-')
