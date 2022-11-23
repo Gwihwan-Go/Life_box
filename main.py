@@ -4,6 +4,10 @@ from utils.html_parser import *
 from utils.utils import *
 from utils.get_onenote import get_onenote
 import yaml
+import nltk
+import json
+nltk.download('omw-1.4')
+nltk.download('punkt')
 
 if __name__ == "__main__" :
 
