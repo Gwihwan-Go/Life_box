@@ -2,6 +2,8 @@
 # Categorizing Logic
 # raw_words -> core_words -> lemmatization -> if any word of words in category_list -> category
 
+import json
+
 keylist_save_path = "resources/key_list.json"
 
 def load(save_path) :
