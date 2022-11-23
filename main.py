@@ -10,10 +10,13 @@ if __name__ == "__main__" :
     try :
         if os.environ['GITHUB_ACTIONS'] :
             config = os.environ
-    ##For github actions##
+            print( "Running in GitHub Actions" )
+            whether_update = True
     except :
         with open('config.yaml') as f:
             config = yaml.safe_load(f)
+            print( "Running in local" )
+            whether_update = False
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--end_day", type=str, 
@@ -44,4 +47,6 @@ if __name__ == "__main__" :
                             for _ in processed_content))
 
     write_text_file(file_content, period, output_path)
-    update_gist(output_path, config['gist_id'], config['auth_token'])
+
+    if whether_update: # only update when running in GitHub Actions
+        update_gist(output_path, config['gist_id'], config['auth_token'])
