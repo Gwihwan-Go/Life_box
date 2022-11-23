@@ -5,6 +5,7 @@
 import nltk
 import json
 nltk.download('omw-1.4')
+nltk.download('punkt')
 
 keylist_save_path = "resources/key_list.json"
 
