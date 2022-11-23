@@ -6,8 +6,7 @@ from utils.get_onenote import get_onenote
 import yaml
 import nltk
 import json
-nltk.download('omw-1.4')
-nltk.download('punkt')
+nltk.download('all')
 
 if __name__ == "__main__" :
 
