@@ -1,6 +1,10 @@
 #This file deals with the language data
+# Categorizing Logic
+# raw_words -> core_words -> lemmatization -> if any word of words in category_list -> category
 
+import nltk
 import json
+nltk.download('omw-1.4')
 
 keylist_save_path = "resources/key_list.json"
 
@@ -16,6 +20,7 @@ def load(save_path) :
         results = json.load(d)
     d.close()
     return results
+
 def search(target,key_list) :
     """
     search target word from key_list
@@ -30,7 +35,8 @@ def search(target,key_list) :
     target = target.lower()
     result = target
     for key, word_list in key_list.items() :
-        if target in word_list :
+        #if any words in sentence in word_list 
+        if any([word in target for word in word_list]) :
             result = key
             break
     if result != target :  
@@ -102,26 +108,31 @@ def preprocess(words) :
     ############
     return [correct_word(word) \
             for word in words.split(split_symbol)] #correct spelling of words
-def correct_word(word) :
+def correct_word(words) :
     """
     algorithm of preprocessing words into core meaningful word
     if words includes '/' -> split it and give list
 
-    correct spelling of words
+    correct spelling and lemmatizing words
 
     input :
-        word(str) : target words
+        words(str) : target words
     output :
-        word(str) : corrected word
+        words(str) : corrected word
     """
     from textblob import TextBlob
+    from textblob import Word
 
-    if len(word) > 0 :
-        word = TextBlob(word).correct()
+    if len(words) > 0 :
+        for word in words.split() :
+            corrected = TextBlob(word).correct() #correct spelling of words
+            new_word = Word(corrected).lemmatize(corrected.tags[0][1]) #lemmatize
+            words = words.replace(word, str(new_word))
+
     else : #if word is empty
-        word = 'others'
+        words = 'others'
 
-    return word
+    return words
     
 def categorize(words) :
     """
@@ -144,4 +155,5 @@ def categorize(words) :
     return words
 
 if __name__ == "__main__" :
-    print(categorize('stdy/naap/lanch'))
+    print(categorize('stdy rocks babies/naap/lanch/good better'))
+
