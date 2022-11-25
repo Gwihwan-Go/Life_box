@@ -3,7 +3,7 @@
 # raw_words -> core_words -> lemmatization -> if any word of words in category_list -> category
 
 import json
-
+import re
 keylist_save_path = "resources/key_list.json"
 
 def load(save_path) :
@@ -34,13 +34,14 @@ def search(target,key_list) :
     result = target
     for key, word_list in key_list.items() :
         #if any words in sentence in word_list 
-        if any([word in target for word in word_list]) :
-            result = key
-            break
-    if result != target :  
-        return result   
-    else :
-        return None
+        # print(word_list)
+        # any word in target is in word_list 
+        for word in target.split() :
+            if word in word_list :
+                result = key
+                return result
+
+    return None
 
 
 ## add new key
@@ -121,15 +122,19 @@ def correct_word(words) :
     from textblob import TextBlob
     from textblob import Word
 
+    print('before',words)
+
     if len(words) > 0 :
         for word in words.split() :
             corrected = TextBlob(word).correct() #correct spelling of words
-            new_word = Word(corrected).lemmatize(corrected.tags[0][1]) #lemmatize
-            words = words.replace(word, str(new_word))
+            # if corrected is not alphabet word 
+            if re.match("^[a-zA-Z]*$", str(corrected)) :
+                new_word = Word(corrected).lemmatize(corrected.tags[0][1]) #lemmatize
+                words = words.replace(word, str(new_word))
 
     else : #if word is empty
         words = 'others'
-
+    print('after',words)
     return words
     
 def categorize(words) :
@@ -153,5 +158,5 @@ def categorize(words) :
     return words
 
 if __name__ == "__main__" :
-    print(categorize('stdy rocks babies/naap/lanch/good better'))
+    print(categorize('coda - hi hello'))
 
