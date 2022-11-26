@@ -122,8 +122,6 @@ def correct_word(words) :
     from textblob import TextBlob
     from textblob import Word
 
-    print('before',words)
-
     if len(words) > 0 :
         for word in words.split() :
             corrected = TextBlob(word).correct() #correct spelling of words
@@ -134,7 +132,6 @@ def correct_word(words) :
 
     else : #if word is empty
         words = 'others'
-    print('after',words)
     return words
     
 def categorize(words) :
