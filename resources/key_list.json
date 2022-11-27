@@ -3,9 +3,9 @@
 "\ud83c\udf54eating": ["eating","food","breakfast","lunch", "dinner", "cook", "cooking","food"], 
 "\ud83c\udfc0sports": ["basketball","badminton","swimming"], 
 "\ud83d\udcb0work": ["work","search","chores","chorse","plan","daily life works","calling"], 
-"\ud83d\udcdaread": ["read", "read novel", "novel", "book", "books"], 
-"\ud83d\udcd6academic": ["ppt","meeting","Coding study","think","chinese","english","listen","voca","reading","write","speaking","planning", "coding", "study","toefl","code", "project", "dsail", "homework", "classes", "course", "class", "courses", "research"], 
+"\ud83d\udcdaread": ["read", "novel", "book"], 
+"\ud83d\udcd6academic": ["counsel","ppt","meeting","Coding study","think","chinese","english","listen","voca","reading","write","speaking","planning", "study","toefl","code", "project", "dsail", "homework", "classes", "course", "class", "research"], 
 "\ud83d\udcbbtoy project": ["side project","toy", "toy project","setting"], 
-"\ud83d\ude0crecharging": ["Watch movies","play","ktv","prepare for travel","rest","dog", "watching","festival","play", "restroom","bumping around", "prepare for travel.", "travel","youtube","surfing", "essay","preparing for study","writing","shopping","hospital","shower", "friends", "watch", "friend"],
-"🚎road":["on the road","bus","road","waiting for the bus"]
+"\ud83d\ude0crecharging": ["date","Watch","play","ktv","travel","rest","dog", "watch","festival","play", "restroom","bumping around","youtube","surfing","shopping","hospital","shower", "friend"],
+"🚎road":["bus","road","wait"]
 }

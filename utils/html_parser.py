@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
-from utils.utils import add_dictionary
-from utils.nlp_utils import categorize
+from utils.utils import *
+from utils.nlp_utils import *
 from collections import defaultdict
 
 def collect_table_content(content) :
@@ -97,13 +97,13 @@ def interpret_table_contents(raw_data) :
         prev_end = end_time ##if "-17:30" not "15:30-17:30" in this case, we need to save prev_end time
         ###############read time - handling exception##############
 
-        cate_atv=categorize(atv)  ##categroize dictionary key to more representative ones
-        for part_atv in cate_atv :
-            divider = len(cate_atv)
+        for part_atv in atv.split('/') :
+            cate_atv=categorize(part_atv)  ##categroize dictionary key to more representative ones
+            divider = len(atv.split('/'))
             divided_hour = hour/divider
         ####### save data zone ########
-            print(f"{part_atv}({atv}) : {divided_hour}")
-            dic[part_atv]+=divided_hour
+            print(f" : {divided_hour}") # print activity at categorize func
+            dic[cate_atv]+=divided_hour
 
     return dic
     
@@ -137,6 +137,17 @@ def contents_to_organized_dict(contents, target_notebook_names):
             raw_time_data = collect_table_content(inner_dict[month][day])
             ## add dictionary files
             time_data = add_dictionary(time_data, interpret_table_contents(raw_time_data))
-    
+            
+    print_and_clear_unlist_words()
     time_data = dict(sorted(list(time_data.items()), key=lambda x : x[1], reverse=True))
     return time_data
+
+if __name__ == "__main__" :
+
+    from utils import *
+    from nlp_utils import *
+    atv = 'road - hello hi god'
+    for part_atv in atv.split('/') :
+        print(part_atv)
+        cate_atv=categorize(part_atv)
+        print(cate_atv)

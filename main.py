@@ -13,14 +13,11 @@ if __name__ == "__main__" :
     try :
         if os.environ['GITHUB_ACTIONS'] :
             config = os.environ
-            print( "Running in GitHub Actions" )
-            whether_update = True
     except :
         with open('config.yaml') as f:
             config = yaml.safe_load(f)
-            print( "Running in local" )
-            whether_update = False
-
+            
+    whether_update = get_env()
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--end_day", type=str, 
         help="It will get the data until a day before the day, 7/27 for 7/20-7/26",

@@ -3,6 +3,19 @@ from datetime import datetime, timedelta
 import math
 from pytz import timezone
 
+def get_env() :
+    #print current kst time
+    print('The code is running at :',time_info())
+    try : 
+        if os.environ['GITHUB_ACTIONS'] :
+            print( "Running in GitHub Actions" )
+            return True
+    except :
+        print( "Running in Local Device" )
+        return False
+    
+
+
 def add_dictionary(dic1, dic2) :
     """
     add two dictionaries

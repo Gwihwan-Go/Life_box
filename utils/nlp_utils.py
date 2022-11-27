@@ -5,7 +5,7 @@
 import json
 import re
 keylist_save_path = "resources/key_list.json"
-
+unlist_words_path = 'resources/unlisted_words.txt'
 def load(save_path) :
     """
     load key_list from save_path
@@ -31,15 +31,9 @@ def search(target,key_list) :
         None : if target isn't exist in key_list
     """
     target = target.lower()
-    result = target
     for key, word_list in key_list.items() :
-        #if any words in sentence in word_list 
-        # print(word_list)
-        # any word in target is in word_list 
-        for word in target.split() :
-            if word in word_list :
-                result = key
-                return result
+        if target in word_list :
+            return key
 
     return None
 
@@ -87,35 +81,31 @@ def save(key_list, save_path) :
     f.close()
     print(f"file has successfuly saved at {save_path}")
 
-def preprocess(words) :
+def preprocess(word) :
     """
     algorithm of preprocessing words into core meaningful word
-    if words includes '/' -> split it and give list
 
     correct spelling of words
 
     input :
-        words(str) : target words, may include '/'
+        words(str) : target word
     output :
         words(list) : list of words
     """
-    split_symbol = '/' 
     ###############
     ##############
     #####NEED######
     ##############
     ############
-    return [correct_word(word) \
-            for word in words.split(split_symbol)] #correct spelling of words
+    return correct_word(word) #correct spelling of words
 def correct_word(words) :
     """
     algorithm of preprocessing words into core meaningful word
-    if words includes '/' -> split it and give list
 
     correct spelling and lemmatizing words
 
     input :
-        words(str) : target words
+        word(str) : target word, or words
     output :
         words(str) : corrected word
     """
@@ -124,36 +114,65 @@ def correct_word(words) :
 
     if len(words) > 0 :
         for word in words.split() :
-            corrected = TextBlob(word).correct() #correct spelling of words
             # if corrected is not alphabet word 
-            if re.match("^[a-zA-Z]*$", str(corrected)) :
-                new_word = Word(corrected).lemmatize(corrected.tags[0][1]) #lemmatize
-                words = words.replace(word, str(new_word))
-
+            only_string = re.sub('[^a-zA-Z]+', '', word) #remove non-alphabet from
+            corrected = TextBlob(only_string).correct() #correct spelling of words
+            if len(corrected) > 0 :
+                try :
+                    new_word = Word(corrected).lemmatize(corrected.tags[0][1]) #lemmatize
+                    words = words.replace(word, str(new_word))
+                except :
+                    print('no tags', corrected)
     else : #if word is empty
         words = 'others'
     return words
-    
+
+def print_and_clear_unlist_words() :
+    """
+    print unlisted words and delete file
+    """
+    # clear unlisted_words.txt file
+    f = open(unlist_words_path, 'r')
+    for word in f.read().strip().split('\n') :
+        print(f"unlisted words : {word}")
+    f.close()
+
+    f = open(unlist_words_path, 'w')
+    print("unlisted words file has been cleared")
+    f.close()
+
+def get_unlist_words(words) :
+    """
+    get unlisted words
+
+    input :
+        words(str) : target words
+    """
+    # if text file exists, append
+    # else, create new file
+    f = open(unlist_words_path, 'a')
+    f.write(f"{words}\n")
+    f.close()
+
 def categorize(words) :
     """
     algorithm of categorizing words
     input :
-        word(str) : target word
+        word(str) : target word or words ex) 'nap', 'play at park'
     output :
         category(str) : representation of the word
     """
     key_list=load(keylist_save_path)
-    words = preprocess(words)
-    for idx in range(len(words)) :
-        
-        cate = search(words[idx], key_list) ##categroize dictionary key to more representative ones
+    for word in words.split() :
+        word = preprocess(word)
+        cate = search(word, key_list) ##categroize dictionary key to more representative ones
         if cate is not None :
-            words[idx]=cate
-        else :
-            print(f"element : {words[idx]} doesn't exist in the key list")
-            words[idx] = 'others'
-    return words
+            print(f"{cate} <- {words}({word})", end='') # continue print divided hour at interpret_table_contents in html_parser 
+            return cate
+    get_unlist_words(preprocess(words))
+    print(f"{preprocess(words)}({words}) doesn't exist in the key list", end='')
+    return 'others'
 
 if __name__ == "__main__" :
-    print(categorize('coda - hi hello'))
-
+    # print(categorize(['coda - homwork (hi) hello']))
+    print_and_clear_unlist_words()
