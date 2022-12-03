@@ -26,7 +26,7 @@ def collect_table_content(content) :
     title = title.split(' ')[-1]
     result.insert(0, [title,'sleep'])
     
-    return result
+    return [i for i in result if len(i)>0]
 
 def get_time_info_without_errors(time, prev_info=None) :
     """
@@ -79,23 +79,31 @@ def interpret_table_contents(raw_data) :
 
     prev_end=None
     dic = defaultdict(timedelta)
-    
-    for tm, atv in [i for i in raw_data if len(i)>0] :
+    # print("\n***raw_data***\n",raw_data)
+    for row in raw_data :
+        if len(row) == 1 :
+            print("There is something wrong with the table. Please check the table.")
+            print("row : ",row)
+            continue
+        else :
+            tm, atv = row[0], row[1]
         ###############read time##############
-        start, end = tm.split('-')
-        start_time = get_time_info_without_errors(start, prev_end)
-        end_time = get_time_info_without_errors(end, start_time)
+        if '-' in tm :
+            start, end = tm.split('-')
+            start = get_time_info_without_errors(start, prev_end)
+            end = get_time_info_without_errors(end, start)
+        else :
+            start = get_time_info_without_errors("", prev_end)
+            end = get_time_info_without_errors(tm, start)
+
+        prev_end = end # for next loop to fill the start time if it is not written. 
         ###############read time##############
 
         ###############calculate hours##############
-        hour = end_time-start_time
+        hour = end-start
         while hour < timedelta(0) : ##if 11 - 1 2 3 =?
             hour+=timedelta(hours=12) # 23 - 1 2 3 =?
         ###############calculate hours##############
-        
-        ###############read time - handling exception##############
-        prev_end = end_time ##if "-17:30" not "15:30-17:30" in this case, we need to save prev_end time
-        ###############read time - handling exception##############
 
         for part_atv in atv.split('/') :
             cate_atv=categorize(part_atv)  ##categroize dictionary key to more representative ones
