@@ -2,9 +2,9 @@
 "\ud83c\udf19sleep": ["sleep", "nap"], 
 "\ud83c\udf54eating": ["eat","food","breakfast","lunch", "dinner", "cook","food"], 
 "\ud83c\udfc0sports": ["basketball","badminton","swimming"], 
-"\ud83d\udcb0work": ["prepare","work","search","chores","chorse","plan","daily life works","calling"], 
+"\ud83d\udcb0work": ["work","search","chores","chorse","plan","daily life works","calling"], 
 "\ud83d\udcdaread": ["read", "novel", "book"], 
-"\ud83d\udcd6academic": ["counsel","ppt","meeting","Coding study","think","chinese","english","listen","voca","reading","write","speaking","planning", "study","toefl","code", "project", "dsail", "homework", "classes", "course", "class", "research"], 
+"\ud83d\udcd6academic": ["prepare", "counsel","ppt","meeting","Coding study","think","chinese","english","listen","voca","reading","write","speaking","planning", "study","toefl","code", "project", "dsail", "homework", "classes", "course", "class", "research"], 
 "\ud83d\udcbbtoy project": ["side project","toy", "toy project","setting"], 
 "\ud83d\ude0crecharging": ["hugging","date","Watch","play","ktv","travel","rest","dog", "watch","festival","play", "restroom","bumping around","youtube","surfing","shopping","hospital","shower", "friend"],
 "🚎road":["walk","bus","road","wait"]
