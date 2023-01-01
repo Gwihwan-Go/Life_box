@@ -161,14 +161,14 @@ def calculate_start_end_day(start_day,period) :
     """
     ## convert start_day to datetime object
     if '/' in start_day :
-        start_day = datetime.strptime(start_day, '%m/%d')
+        start_day = datetime.strptime(start_day, '%Y/%m/%d')
     elif '-' in start_day :
-        start_day = datetime.strptime(start_day, '%m-%d')
+        start_day = datetime.strptime(start_day, '%Y-%m-%d')
     
     now = datetime.now()+timedelta(hours=9)
-    start_day = start_day.replace(year=datetime.now().year)
+    # start_day = start_day.replace(year=datetime.now().year)
     end_day = now - start_day + timedelta(days=period)
-    start_day = now - start_day.replace(year=datetime.now().year)
+    start_day = now - start_day
 
     return [start_day.days, end_day.days]
 
@@ -184,18 +184,18 @@ def update_gist(file_path, gist_id, auth_token):
 
 if __name__ == "__main__" :
     ##For github actions##
-    try :
-        if os.environ['GITHUB_ACTIONS'] :
-            auth_token = os.environ['auth_token']
-            gist_id = os.environ['gist_id']
-    ##For github actions##
-    except :
-        import yaml
-        with open('config.yaml') as f:
-            config = yaml.safe_load(f)
-        f.close()
-    file_path='./result.txt'
-    update_gist(file_path, config['gist_id'], config['auth_token'])
-    startdays = "7/27"
+    # try :
+    #     if os.environ['GITHUB_ACTIONS'] :
+    #         auth_token = os.environ['auth_token']
+    #         gist_id = os.environ['gist_id']
+    # ##For github actions##
+    # except :
+    #     import yaml
+    #     with open('config.yaml') as f:
+    #         config = yaml.safe_load(f)
+    #     f.close()
+    # file_path='./result.txt'
+    # update_gist(file_path, config['gist_id'], config['auth_token'])
+    startdays = "2023/1/1"
     period = 7
     print(calculate_start_end_day(startdays,period))

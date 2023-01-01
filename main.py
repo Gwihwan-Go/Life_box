@@ -22,7 +22,7 @@ if __name__ == "__main__" :
     parser.add_argument("-d", "--end_day", type=str, 
         help="It will get the data until a day before the day, 7/27 for 7/20-7/26",
         action="store", 
-        default=f"{(datetime.now() - timedelta(days = 1)).month}/{(datetime.now() - timedelta(days = 1)).day}") #default is yesterday 
+        default=f"{(datetime.now() - timedelta(days = 1)).year}/{(datetime.now() - timedelta(days = 1)).month}/{(datetime.now() - timedelta(days = 1)).day}") #default is yesterday 
     parser.add_argument("-p", "--period", 
         type=int,help="how long do you want to know?", 
         default=7)        
