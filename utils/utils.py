@@ -141,6 +141,7 @@ def write_text_file(file_content, period, output_path) :
     end_day = datetime.now() - timedelta(days=period[0]) + timedelta(hours=9)
     footer = f"Last refresh: {time_info('Asia/Seoul')}"
     with open(output_path, 'w') as f :
+        f.write(f"This file will not be uploaded after 2023/02/07")
         f.write(f"My life Overview in period of {start_day.month}/{start_day.day} ~ {end_day.month}/{end_day.day} [averaged]\n")
         f.writelines(file_content)
         f.write('\n')
