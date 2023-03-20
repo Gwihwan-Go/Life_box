@@ -80,7 +80,7 @@ def interpret_table_contents(raw_data) :
     prev_end=None
     dic = defaultdict(timedelta)
     # print("\n***raw_data***\n",raw_data)
-    for row in raw_data :
+    for row in [raw_data for raw_data in raw_data if len(raw_data)>1] :
         if len(row) == 1 :
             print("There is something wrong with the table. Please check the table.")
             print("row : ",row)
