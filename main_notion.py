@@ -11,13 +11,6 @@ from pprint import pprint
 nltk.download('all')
 
 if __name__ == "__main__" :
-
-    try :
-        if os.environ['GITHUB_ACTIONS'] :
-            config = os.environ
-    except :
-        with open('config.yaml') as f:
-            config = yaml.safe_load(f)
             
     whether_update = get_env()
     parser = argparse.ArgumentParser()

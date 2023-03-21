@@ -140,7 +140,6 @@ def write_text_file(file_content, start_day, end_day, output_path) :
 
     footer = f"Last refresh: {time_info('Asia/Seoul')}"
     with open(output_path, 'w') as f :
-        f.write(f"This file will not be uploaded after 2023/02/07")
         f.write(f"My life Overview in period of {start_day} ~ {end_day} [averaged]\n")
         f.writelines(file_content)
         f.write('\n')

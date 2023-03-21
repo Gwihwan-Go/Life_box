@@ -30,7 +30,6 @@ jobs:
         authTenant: ${{ secrets.authTenant }}
         auth_token: ${{ secrets.auth_token }}
         gist_id: ${{ secrets.gist_id }}
-        password: ${{ secrets.password }}
-        username: ${{ secrets.username }}
-        tenant_id: ${{ secrets.tenant_id }}
+        notion_database_id: ${{ secrets.notion_database_id }}
+        notion_secret: ${{ secrets.notion_secret }}
       run: python main_notion.py
