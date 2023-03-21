@@ -1,9 +1,12 @@
 import requests
 import yaml
-
-with open('config.yaml') as f:
-    config = yaml.safe_load(f)
-# Replace with your API key
+import os
+try :
+    if os.environ['GITHUB_ACTIONS'] :
+        config = os.environ
+except :
+    with open('config.yaml') as f:
+        config = yaml.safe_load(f)
 
 NOTION_TOKEN = config['notion_secret']
 DATABASE_ID = config['notion_database_id']
@@ -13,6 +16,7 @@ headers = {
     "Content-Type": "application/json",
     "Notion-Version": "2022-06-28",
 }
+
 
 def get_block_children(block_id):
     # Set the URL for the retrieve block children endpoint
@@ -24,6 +28,49 @@ def get_block_children(block_id):
     # Return the list of block children
     return response["results"]
 
+def query_database_by_range(start_day, end_day) :
+    """
+    query database by date range given by start_day and end_day1`                                       
+    input :
+        start_day : 'YYYY-MM-DD'
+        end_day : 'YYYY-MM-DD'
+    output :
+        list of page_id
+    """
+    # Make the request to the Notion API to get pages with the specified date
+    url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
+    query = {
+        "filter": {
+        "and": [
+            {
+                "property": "date",
+                "date": {
+                    "on_or_after": start_day
+                }
+            },
+            {
+                "property": "date",
+                "date": {
+                    "on_or_before": end_day
+                }
+            }
+        ]
+        }
+    }
+
+    response = requests.post(url, headers=headers, json=query)
+    result = response.json()
+
+    # Print the title of each page that matches the filter
+    return [page['id'] for page in result["results"]]
+
+def get_page_by_page_id(page_id) :
+
+    url = f"https://api.notion.com/v1/pages/{page_id}"
+    
+    response = requests.post(url, headers=headers)
+
+    return response.json()
 def get_pages(num_pages=1):
     """
     If num_pages is None, get all_data pages, otherwise just the defined number.
@@ -90,4 +137,7 @@ def main(num_of_pages) :
     return {'date' : date, 'table' : table}
 
 if __name__ == "__main__" : 
-  print(main(3))
+
+    from pprint import pprint
+    id = '0f263940-ed12-4558-8ffb-0213644957c8'
+    pprint(get_page_by_page_id(id.replace('-', '')))

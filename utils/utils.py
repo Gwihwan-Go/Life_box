@@ -127,7 +127,7 @@ def time_info(location='Asia/Seoul') :
     
     return now.strftime("%A, %d %b, %H:%M %Z")
 
-def write_text_file(file_content, period, output_path) :
+def write_text_file(file_content, start_day, end_day, output_path) :
     """
     write text file which would be the git file at last.
     input :
@@ -137,17 +137,16 @@ def write_text_file(file_content, period, output_path) :
     
     """
     #get datetime object from n day before today
-    start_day = datetime.now() - timedelta(days=period[-1] - 1) + timedelta(hours=9)
-    end_day = datetime.now() - timedelta(days=period[0]) + timedelta(hours=9)
+
     footer = f"Last refresh: {time_info('Asia/Seoul')}"
     with open(output_path, 'w') as f :
         f.write(f"This file will not be uploaded after 2023/02/07")
-        f.write(f"My life Overview in period of {start_day.month}/{start_day.day} ~ {end_day.month}/{end_day.day} [averaged]\n")
+        f.write(f"My life Overview in period of {start_day} ~ {end_day} [averaged]\n")
         f.writelines(file_content)
         f.write('\n')
         f.write(footer)
     f.close()
-    print(f"{start_day.month}/{start_day.day} ~ {end_day.month}/{end_day.day} records has successfully saved at {output_path}")
+    print(f"{start_day} ~ {end_day} records has successfully saved at {output_path}")
 
 def calculate_start_end_day(start_day,period) :
     """
