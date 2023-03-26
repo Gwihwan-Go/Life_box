@@ -1,11 +1,12 @@
 {
-"\ud83c\udf19sleep": ["bed","sleep", "nap"], 
-"\ud83c\udf54eating": ["eat","food","breakfast","lunch", "dinner", "cook","food"], 
-"\ud83c\udfc0sports": ["stretch","basketball","badminton","swimming"], 
-"\ud83d\udcb0work": ["work","search","chores","chorse","plan","daily life works","calling"], 
-"\ud83d\udcdaread": ["read", "novel", "book"], 
-"\ud83d\udcd6academic": ["lecture","interview","paper","prepare", "counsel","ppt","meeting","Coding study","think","chinese","english","listen","voca","reading","write","speaking","planning", "study","toefl","code", "project", "dsail", "homework", "classes", "course", "class", "research"], 
-"\ud83d\udcbbmy project": ["something","piano","side project","toy", "toy project","setting"], 
-"\ud83d\ude0crecharging": ["lovelove","photo","talk","late", "watch", "hugging","date","play","ktv","travel","rest","dog","festival","play", "restroom","bumping around","youtube","surfing","shopping","hospital","shower", "friend","buy"],
+"\ud83c\udf19Sleep": ["bed","sleep", "nap"], 
+"\ud83c\udf54Eat": ["eat","food","breakfast","lunch", "dinner", "cook","food"], 
+"\ud83c\udfc0Sports": ["stretch","basketball","badminton","swimming"], 
+"\ud83d\udcb0Work": ["meeting","work"], 
+"\ud83d\udcdaRead": ["read", "novel", "book"], 
+"🧹Chores": ["cleaning","chorse","plan","daily life works","calling"],
+"\ud83d\udcd6Academic": ["lecture","interview","paper","prepare", "counsel","ppt","meeting","Coding study","think","chinese","english","listen","voca","reading","write","speaking","planning", "study","toefl","code", "project", "dsail", "homework", "classes", "course", "class", "research"], 
+"\ud83d\udcbbHobby": ["piano","guitar","sing","dance","play", "restroom","bumping around","youtube","surfing","shopping","hospital","shower", "friend","buy"], 
+"\ud83d\ude0cRecharging": ["lovelove","photo","talk","late", "watch", "hugging","date","play","ktv","travel","rest","dog","festival","play", "restroom","bumping around","youtube","surfing","shopping","hospital","shower", "friend","buy"],
 "🚎road":["walk","bus","road","wait"]
 }

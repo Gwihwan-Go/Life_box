@@ -115,7 +115,7 @@ def correct_word(words) :
     if len(words) > 0 :
         for word in words.split() :
             # if corrected is not alphabet word 
-            only_string = re.sub('[^a-zA-Z]+', '', word) #remove non-alphabet from
+            only_string = re.sub('[^a-zA-Z]+', ' ', word) #remove non-alphabet from
             corrected = TextBlob(only_string).correct() #correct spelling of words
             if len(corrected) > 0 :
                 try :
