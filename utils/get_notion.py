@@ -68,9 +68,16 @@ def get_page_by_page_id(page_id) :
 
     url = f"https://api.notion.com/v1/pages/{page_id}"
     
-    response = requests.post(url, headers=headers)
+    response = requests.get(url, headers=headers)
 
     return response.json()
+
+def get_date_by_page_id(page_id) :
+    """
+    get date by page_id
+    """
+    page = get_page_by_page_id(page_id)
+    return page['properties']['date']['date']['start']
 def get_pages(num_pages=1):
     """
     If num_pages is None, get all_data pages, otherwise just the defined number.
@@ -111,6 +118,7 @@ def return_date_of_my_page(page_content) :
 def read_table_of_my_page(page_id) :
     tb_list = []
     blocks = get_block_children(page_id)
+    print(f"Processing the page of {get_date_by_page_id(page_id)} date...")
     for block in blocks:
         if block['type'] == 'table' :
             table_id = block['id']
@@ -139,5 +147,9 @@ def main(num_of_pages) :
 if __name__ == "__main__" : 
 
     from pprint import pprint
-    id = '0f263940-ed12-4558-8ffb-0213644957c8'
-    pprint(get_page_by_page_id(id.replace('-', '')))
+    start_day = '2023-03-01'
+    end_day = '2023-03-03'
+    ids = query_database_by_range(start_day, end_day)
+    for id in ids :
+        pprint(get_date_by_page_id(id))
+        break

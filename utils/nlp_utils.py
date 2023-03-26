@@ -115,8 +115,7 @@ def correct_word(words) :
     if len(words) > 0 :
         for word in words.split() :
             # if corrected is not alphabet word 
-            only_string = re.sub('[^a-zA-Z]+', ' ', word) #remove non-alphabet from
-            corrected = TextBlob(only_string).correct() #correct spelling of words
+            corrected = TextBlob(word).correct() #correct spelling of words
             if len(corrected) > 0 :
                 try :
                     new_word = Word(corrected).lemmatize(corrected.tags[0][1]) #lemmatize
@@ -163,6 +162,7 @@ def categorize(words) :
         category(str) : representation of the word
     """
     key_list=load(keylist_save_path)
+    words = re.sub('[^a-zA-Z]+', ' ', words) #remove non-alphabet from
     for word in words.split() :
         word = preprocess(word)
         cate = search(word, key_list) ##categroize dictionary key to more representative ones

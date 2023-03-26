@@ -13,6 +13,7 @@ nltk.download('all')
 if __name__ == "__main__" :
             
     whether_update = get_env()
+    unlist_words_path = 'resources/unlisted_words.txt'
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-e", "--end_day", type=str, 
@@ -53,7 +54,7 @@ if __name__ == "__main__" :
     processed_content = [preprocess_data(key, averaged, timedelta(days=1)) for key in averaged.keys()]
     file_content = '\n'.join((generate_file_content_line(_)
                             for _ in processed_content))
-
+    print_and_clear_unlist_words()
     write_text_file(file_content, args.start_day, args.end_day, output_path)
 
     if whether_update: # only update when running in GitHub Actions
