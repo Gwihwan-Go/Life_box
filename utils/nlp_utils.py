@@ -115,7 +115,8 @@ def correct_word(words) :
     if len(words) > 0 :
         for word in words.split() :
             # if corrected is not alphabet word 
-            corrected = TextBlob(word).correct() #correct spelling of words
+            # corrected = TextBlob(word).correct() #correct spelling of words
+            corrected = word
             if len(corrected) > 0 :
                 try :
                     new_word = Word(corrected).lemmatize(corrected.tags[0][1]) #lemmatize
