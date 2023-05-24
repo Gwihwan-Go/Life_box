@@ -113,15 +113,16 @@ def correct_word(words) :
     from textblob import Word
 
     if len(words) > 0 :
-        for word in words.split() :
-            # if corrected is not alphabet word 
-            corrected = TextBlob(word).correct()
-            if len(corrected) > 0 :
-                try :
-                    new_word = Word(corrected).lemmatize(corrected.tags[0][1]) #lemmatize
-                    words = words.replace(word, str(new_word))
-                except :
-                    print('no tags', corrected)
+        pass
+        # for word in words.split() :
+        #     # if corrected is not alphabet word 
+        #     corrected = TextBlob(word).correct()
+        #     if len(corrected) > 0 :
+        #         try :
+        #             new_word = Word(corrected).lemmatize(corrected.tags[0][1]) #lemmatize
+        #             words = words.replace(word, str(new_word))
+        #         except :
+        #             print('no tags', corrected)
     else : #if word is empty
         words = 'others'
     return words
