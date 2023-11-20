@@ -138,7 +138,7 @@ def write_text_file(file_content, start_day, end_day, output_path) :
     """
     #get datetime object from n day before today
 
-    footer = f"Last refresh: {time_info('Asia/Seoul')}"
+    footer = f"Last refresh: {time_info('Asia/Seoul')}\nThis script is auto-updated based on my notion contents"
     with open(output_path, 'w') as f :
         f.write(f"My life Overview in period of {start_day} ~ {end_day} [averaged]\n")
         f.writelines(file_content)
