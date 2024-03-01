@@ -7,7 +7,6 @@ import yaml
 import nltk
 from utils.get_notion import *
 from pprint import pprint
-
 nltk.download('all')
 
 if __name__ == "__main__" :
