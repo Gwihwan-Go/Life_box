@@ -7,7 +7,7 @@ class NotionProperties(Enum):
     STUDY_TIME = "有价值时间"
     # Add other property names here as needed
     
-def report_study_and_revise_db(client, date=date.today()):
+def report_study_and_revise_db(client, date=date.today() - timedelta(days=1)):
     """
     Report the study time from the data.
     """
@@ -25,9 +25,9 @@ def report_study_and_revise_db(client, date=date.today()):
         print(f'Pretty time: {pretty_time(study_time)}')
         add_study_time_todb(client, page_id, pretty_time(study_time))
         
-    print(all_data)
-    study_time = extract_study_time(all_data)
-    print(f'Study time: {study_time}')
+    # print(all_data)
+    # study_time = extract_study_time(all_data)
+    # print(f'Study time: {study_time}')
     return all_data
 
 def pretty_time(time):
