@@ -6,6 +6,34 @@
 
 Life Logger is a powerful tool that automatically generates comprehensive summaries of your life activities by connecting your Notion database with GitHub Actions. Perfect for individuals who love tracking their daily lives and want meaningful insights without the manual effort.
 
+### ✨ See the Magic in Action
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center" colspan="2"><b>📝 Your Daily Logs</b></td>
+      <td align="center"><b>📊 Automated Weekly Summary</b></td>
+    </tr>
+    <tr>
+      <td>
+        <img src="resources/figures/diarySample2.png" alt="Daily Log Example 1" width="300"/>
+      </td>
+      <td>
+        <img src="resources/figures/diarySample1.png" alt="Daily Log Example 2" width="300"/>
+      </td>
+      <td>
+        <img src="resources/figures/reportSample.png" alt="Weekly Summary Example" width="300"/>
+      </td>
+    </tr>
+  </table>
+
+  <p><i>👆 Transform your daily entries into beautiful, insightful summaries automatically!</i></p>
+</div>
+
+Try it yourself:
+- 📥 [View Sample Daily Log Template[WIP]](https://www.notion.so/life-logger/Daily-Log-1-2024-07-20-2024-07-26-10000000000000000)
+- 📤 [See Sample Weekly Summary](https://gist.github.com/Gwihwan-Go/eb5d0abf02532775199f267397dc1b3d)
+
 ## ✨ Key Features
 
 - 🤖 **Automated Summaries**: Generate reports automatically through GitHub Actions
@@ -16,7 +44,7 @@ Life Logger is a powerful tool that automatically generates comprehensive summar
 
 ## 🚀 Getting Started
 
-1. Set up your Notion database using our template [link]
+1. Set up your Notion database using our template [[WIP]]()
 2. Fork this repository
 3. Configure your GitHub Actions workflow
 4. Watch as your life summaries generate automatically!
@@ -53,7 +81,7 @@ Updated at 2024.03.10
 
 ## 📝 License
 
-[License information here]
+This project is licensed under the MIT License
 
 ---
 
