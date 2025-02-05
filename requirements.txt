@@ -1,5 +1,3 @@
-msal
-bs4 
 requests_oauthlib
 gistyc
 oauthlib
@@ -9,3 +7,4 @@ urllib3
 pytz
 pathvalidate
 textblob
+bs4

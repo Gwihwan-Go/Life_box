@@ -1,7 +1,7 @@
 import argparse
 from datetime import timedelta, datetime
-from utils.html_parser import *
-from utils.utils import *
+from src.html_parser import *
+from src.utils import *
 from utils.get_onenote import get_onenote
 import yaml
 import nltk

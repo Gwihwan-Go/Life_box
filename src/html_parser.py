@@ -3,6 +3,7 @@ from typing import List, Dict, Optional, Tuple
 from collections import defaultdict
 from src.utils import add_dictionary
 from src.nlp_utils import categorize, print_and_clear_unlist_words
+from bs4 import BeautifulSoup
 
 def extract_table_content(html_content: str) -> List[List[str]]:
     """Extract table content from HTML using simple string parsing.
@@ -14,42 +15,20 @@ def extract_table_content(html_content: str) -> List[List[str]]:
         List of rows where each row is [activity, time_range]
     """
     result = []
+    document= BeautifulSoup(html_content,"html.parser")
+    table = document.find('table')
     
-    # Extract title
-    title_start = html_content.find('<title>')
-    title_end = html_content.find('</title>')
-    if title_start != -1 and title_end != -1:
-        title = html_content[title_start + 7:title_end].strip().split()[-1]
-        result.append([title, 'sleep'])
-
-    # Extract table data
-    table_start = html_content.find('<table')
-    table_end = html_content.find('</table>')
+    if table is not None : #If there is no table in a notebook.
+        rows = table.find_all('tr')
+        for row in rows:
+            cols = row.find_all('td')
+            cols = [ele.text.strip() for ele in cols]
+            result.append([ele for ele in cols if ele]) # Get rid of empty values
+    title = document.find('title').get_text()
+    title = title.split(' ')[-1]
+    result.insert(0, [title,'sleep'])
     
-    if table_start != -1 and table_end != -1:
-        table_content = html_content[table_start:table_end]
-        rows = table_content.split('<tr')
-        
-        for row in rows[1:]:  # Skip first split result
-            if '<td' in row:
-                cols = []
-                td_parts = row.split('<td')
-                
-                for td in td_parts[1:]:  # Skip first split result
-                    end_td = td.find('</td>')
-                    if end_td != -1:
-                        text = td[:end_td]
-                        # Remove any remaining HTML tags
-                        while '<' in text and '>' in text:
-                            tag_start = text.find('<')
-                            tag_end = text.find('>')
-                            text = text[:tag_start] + text[tag_end + 1:]
-                        cols.append(text.strip())
-                
-                if cols:
-                    result.append([col for col in cols if col])
-
-    return [row for row in result if len(row) > 0]
+    return [i for i in result if len(i)>0]
 
 def parse_time_range(time_str: str) -> Tuple[str, str]:
     """Split time range into start and end times.
@@ -182,7 +161,7 @@ def contents_to_organized_dict(contents, target_notebook_names):
 if __name__ == "__main__" :
 
     from utils import *
-    from src.nlp_utils import *
+    from nlp_utils import *
     atv = 'road - hello hi god'
     for part_atv in atv.split('/') :
         print(part_atv)
