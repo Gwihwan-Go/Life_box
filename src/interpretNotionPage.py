@@ -127,6 +127,7 @@ def interpret_table_contents(raw_data: List[List[str]]) -> Dict[str, timedelta]:
         time_str, activity = row[0], row[1]
         
         start_str, end_str = parse_time_range(time_str)
+        ##TODO If this is the first row, we need to get the time from the previous day  
         start = get_time_info_without_errors(start_str, prev_end)
         end = get_time_info_without_errors(end_str, start)
         

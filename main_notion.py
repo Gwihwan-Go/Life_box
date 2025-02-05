@@ -76,6 +76,7 @@ def process_pages(client: NotionClient, page_ids: list) -> tuple[dict, int]:
     return dict(sorted(list(all_data.items()), key=lambda x: x[1], reverse=True)), empty_count
 
 def generate_report(all_data: dict, days_between: int) -> str:
+    #TODO: add notion template and invite guest to deploy the workflow
     """Generate report content from data."""
     time_unknown = cal_unknown(all_data, timedelta(days=days_between))
     all_data['🤔no_record'] = time_unknown

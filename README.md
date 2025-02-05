@@ -71,7 +71,6 @@ Try it yourself:
 ## 🙏 Acknowledgments
 
 This project was inspired by and built upon the following amazing projects:
-- [Onenote_export](https://github.com/Danmou/onenote_export)
 - [gistyc](https://github.com/ThomasAlbin/gistyc)
 - [Productive-box](https://github.com/GwiHwan-Go/productive-box)
 - [Notion API](https://developers.notion.com/)
