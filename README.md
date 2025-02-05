@@ -8,6 +8,7 @@ Life Logger is a powerful tool that automatically generates comprehensive summar
 
 ### ✨ See the Magic in Action
 
+
 <div align="center">
   <table>
     <tr>
@@ -16,13 +17,13 @@ Life Logger is a powerful tool that automatically generates comprehensive summar
     </tr>
     <tr>
       <td>
-        <img src="https://raw.githubusercontent.com/Gwihwan-Go/Life-box/main/resources/figures/diarySample2.png" alt="Daily Log Example 1" width="300"/>
+        <img src="resources/figures/diarySample2.png" alt="Daily Log Example 1" width="300"/>
       </td>
       <td>
-        <img src="https://raw.githubusercontent.com/Gwihwan-Go/Life-box/main/resources/figures/diarySample1.png" alt="Daily Log Example 2" width="300"/>
+        <img src="resources/figures/diarySample1.png" alt="Daily Log Example 2" width="300"/>
       </td>
       <td>
-        <img src="https://raw.githubusercontent.com/Gwihwan-Go/Life-box/main/resources/figures/reportSample.png" alt="Weekly Summary Example" width="300"/>
+        <img src="resources/figures/reportSample.png" alt="Weekly Summary Example" width="300"/>
       </td>
     </tr>
   </table>
