@@ -6,7 +6,7 @@ import os
 # Add the parent directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.html_parser import (
+from src.interpretNotionPage import (
     extract_table_content,
     parse_time_range,
     get_time_info_without_errors,

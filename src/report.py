@@ -1,6 +1,6 @@
 from enum import Enum
 from datetime import date, timedelta
-from src.html_parser import interpret_table_contents
+from src.interpretNotionPage import interpret_table_contents
 from src.utils import add_dictionary
 
 class NotionProperties(Enum):

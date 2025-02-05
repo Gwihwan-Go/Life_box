@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from typing import List, Dict, Optional, Tuple
 from collections import defaultdict
 from src.utils import add_dictionary
-from src.nlp_utils import categorize, print_and_clear_unlist_words
+from src.classifyContents import categorize, print_and_clear_unlist_words
 
 def extract_table_content(html_content: str) -> List[List[str]]:
     """Extract table content from HTML using simple string parsing.
@@ -182,7 +182,7 @@ def contents_to_organized_dict(contents, target_notebook_names):
 if __name__ == "__main__" :
 
     from utils import *
-    from src.nlp_utils import *
+    from src.classifyContents import *
     atv = 'road - hello hi god'
     for part_atv in atv.split('/') :
         print(part_atv)

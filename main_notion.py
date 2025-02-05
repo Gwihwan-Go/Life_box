@@ -1,6 +1,6 @@
 import argparse
 from datetime import timedelta, date
-from src.html_parser import interpret_table_contents
+from src.interpretNotionPage import interpret_table_contents
 from src.utils import (
     add_dictionary, get_env, cal_unknown, preprocess_data, 
     generate_file_content_line, write_text_file, update_gist
