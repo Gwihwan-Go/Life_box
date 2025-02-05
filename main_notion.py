@@ -1,14 +1,14 @@
 import argparse
-from datetime import timedelta,  date
-from src.html_parser import *
-from src.utils import *
+from datetime import timedelta, date
+from src.html_parser import interpret_table_contents
+from src.utils import (
+    add_dictionary, get_env, cal_unknown, preprocess_data, 
+    generate_file_content_line, write_text_file, update_gist
+)
+from src.notionClient import NotionClient
+from src.report import report_study_and_revise_db
 import yaml
-import nltk
-from src.notionClient import *
-from pprint import pprint
 import os
-
-nltk.download('all')
 
 def load_config():
     """Load configuration from environment variables or config file."""
@@ -21,77 +21,102 @@ def load_config():
     except Exception as e:
         raise RuntimeError(f"Failed to load configuration: {str(e)}")
 
-if __name__ == "__main__" :
+def parse_arguments():
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-e", "--end_day", type=str, 
+        help="End date in ISO format (e.g., 2024-07-27)",
+        default=(date.today() - timedelta(days=1)).isoformat()
+    )
+    parser.add_argument("-s", "--start_day", type=str, 
+        help="Start date in ISO format (e.g., 2024-07-20)",
+        default=(date.today() - timedelta(days=7)).isoformat()
+    )       
+    parser.add_argument("-o", "--out", 
+        type=str,
+        help="Output directory to store the result", 
+        default="overview"
+    )      
+    parser.add_argument("--report_study_and_revise_db",
+        action="store_true",
+        help="Generate study time summary and revise the database",
+        default=False
+    )
+    return parser.parse_args()
+
+def validate_dates(start_day: str, end_day: str) -> int:
+    """Validate date formats and return days between."""
     try:
-        config = load_config()  # Load config at the start
-        whether_update = get_env()
-        unlist_words_path = 'resources/unlisted_words.txt'
-        parser = argparse.ArgumentParser()
+        start_date = date.fromisoformat(start_day)
+        end_date = date.fromisoformat(end_day)
+        return (end_date - start_date).days + 1
+    except ValueError as e:
+        raise ValueError(f"Error parsing dates: {e}")
 
-        parser.add_argument("-e", "--end_day", type=str, 
-            help="It will get the data until a day before the day, 2024-07-27 for 7/20-7/26",
-            action="store", 
-            default=(date.today() - timedelta(days=1)).isoformat() #default is yesterday 
-        )
-        parser.add_argument("-s", "--start_day", type=str, 
-            help="It will get the data until a day before the day, 2024-07-27 for 7/20-7/26",
-            action="store", 
-            default=(date.today() - timedelta(days=7)).isoformat() #default is one week before of yesterday
-        )       
-        parser.add_argument("-o", "--out", 
-            type=str,help="output directory to store the result", 
-            default="overview")      
-        args = parser.parse_args()
-
-        output_path = args.out
+def process_pages(client: NotionClient, page_ids: list) -> tuple[dict, int]:
+    """Process pages and return aggregated data."""
+    all_data = {}
+    empty_count = 0
+    
+    for page_id in page_ids:
+        page_id = page_id.replace('-', '')
+        table = client.read_page_tables(page_id)
+        # print(f'Table content for {page_id}:', table)  # Debug table content
         
+        new_data = interpret_table_contents(table)
+        # print(f'Interpreted data for {page_id}:', new_data)  # Debug interpreted data
+        
+        if not new_data or len(new_data.keys()) == 0:  # Check if defaultdict has no keys
+            empty_count += 1
+            print(f'Empty page: {page_id} (table length: {len(table) if table else 0})')
+            continue
+            
+        all_data = add_dictionary(all_data, new_data)
+        
+    return dict(sorted(list(all_data.items()), key=lambda x: x[1], reverse=True)), empty_count
+
+def generate_report(all_data: dict, days_between: int) -> str:
+    """Generate report content from data."""
+    time_unknown = cal_unknown(all_data, timedelta(days=days_between))
+    all_data['🤔no_record'] = time_unknown
+    averaged = {key: (value/days_between) for key, value in all_data.items()}
+    processed_content = [preprocess_data(key, averaged, timedelta(days=1)) 
+                        for key in averaged.keys()]
+    return '\n'.join(generate_file_content_line(_) for _ in processed_content)
+
+def main():
+    try:
+        args = parse_arguments()
+        config = load_config()
+        whether_update = get_env()
         client = NotionClient()
+        
+        if args.report_study_and_revise_db:
+            report_study_and_revise_db(client)
+            # return
+            
+        days_between = validate_dates(args.start_day, args.end_day)
         page_ids = client.query_database_by_date_range(args.start_day, args.end_day)
         
-        # Validate date formats
-        try:
-            start_date = date.fromisoformat(args.start_day)
-            end_date = date.fromisoformat(args.end_day)
-            days_between = (end_date - start_date).days + 1
-        except ValueError as e:
-            print(f"Error parsing dates: {e}")
-            exit(1)
-            
         print(f'Processing {days_between} days...')
         print(f'Processing {len(page_ids)} pages...')
-        all_data = {}
-        for page_id in page_ids:
-            #get properties from page_id
-            # date = get_date_from_page_id(page_id)
-            # print(f'Processing {date}...')
-            page_id = page_id.replace('-', '')
-            table = client.read_page_tables(page_id)
-            new_data = interpret_table_contents(table)
-            all_data = add_dictionary(all_data, new_data)
-
-        all_data = dict(sorted(list(all_data.items()), key=lambda x : x[1], reverse=True))
-        # print(all_data)
-        time_unknown = cal_unknown(all_data, timedelta(days=days_between))
-        all_data['🤔no_record'] = time_unknown
-        averaged = {key:(value/days_between) for key,value in all_data.items()}
-        # data to text format and save
-        processed_content = [preprocess_data(key, averaged, timedelta(days=1)) for key in averaged.keys()]
-        file_content = '\n'.join((generate_file_content_line(_)
-                                for _ in processed_content))
-        print_and_clear_unlist_words()
         
-        # Add error handling for file operations
-        
+        all_data, empty_count = process_pages(client, page_ids)
+        days_between -= empty_count
+        file_content = generate_report(all_data, days_between)
         try:
-            write_text_file(file_content, args.start_day, args.end_day, output_path)
+            write_text_file(file_content, args.start_day, args.end_day, args.out)
             if whether_update:
                 if 'gist_id' not in config or 'auth_token' not in config:
                     raise KeyError("Missing required config values for gist update")
-                update_gist(output_path, config['gist_id'], config['auth_token'])
+                update_gist(args.out, config['gist_id'], config['auth_token'])
         except Exception as e:
             print(f"Error writing output or updating gist: {e}")
-            exit(1)
+            raise
             
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         exit(1)
+
+if __name__ == "__main__":
+    main()

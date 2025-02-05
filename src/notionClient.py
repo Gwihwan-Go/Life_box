@@ -4,6 +4,7 @@ import yaml
 import os
 from datetime import datetime
 
+
 class NotionClient:
     """A client for interacting with the Notion API."""
     
@@ -109,6 +110,43 @@ class NotionClient:
                     tables.append(cols)
         return tables
 
+
+    def update_page_property(self, page_id: str, property_name: str, value: Any) -> Dict[str, Any]:
+        """
+        Update a specific property of a page.
+        
+        :param page_id: The ID of the Notion page.
+        :param property_name: The name of the property to update.
+        :param value: The new value to set for the property.
+        :return: The updated page response.
+        """
+        url = f"{self.API_BASE_URL}/pages/{page_id}"
+
+        # Constructing the property update payload based on value type
+        properties = {
+            property_name:{},
+        }
+
+        if isinstance(value, str):
+            properties[property_name] = {"rich_text": [{"text": {"content": value}}]}
+        elif isinstance(value, int) or isinstance(value, float):
+            properties[property_name] = {"number": value}
+        elif isinstance(value, dict) and "select" in value:
+            properties[property_name] = {"select": {"name": value["select"]}}
+        elif isinstance(value, list) and all(isinstance(i, str) for i in value):
+            properties[property_name] = {"multi_select": [{"name": v} for v in value]}
+        elif isinstance(value, dict) and "date" in value:
+            properties[property_name] = {"date": {"start": value["date"]}}
+        else:
+            raise ValueError("Unsupported property type")
+
+        payload = {"properties": properties}
+
+        response = requests.patch(url, json=payload, headers=self.headers)
+        response.raise_for_status()
+
+        return response.json()
+    
 def main(num_pages: Optional[int] = None) -> Dict[str, Any]:
     """Main function to retrieve page data."""
     client = NotionClient()

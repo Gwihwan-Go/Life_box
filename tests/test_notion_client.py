@@ -4,6 +4,15 @@ from datetime import datetime
 from src.notionClient import NotionClient, main
 import pprint
 
+@pytest.fixture
+def mock_notion_client():
+    """Fixture providing a mocked NotionClient instance"""
+    with patch.object(NotionClient, '_load_config', return_value={
+        'notion_secret': 'test_secret',
+        'notion_database_id': 'test_db_id'
+    }):
+        return NotionClient()
+
 def test_main():
     mock_page = {
         'id': 'page-id',
