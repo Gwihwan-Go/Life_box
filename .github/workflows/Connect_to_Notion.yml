@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    - cron: '0 */5 * * *' 
+    - cron: '0 */5 * * *' # every 5 hours
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,4 +32,4 @@ jobs:
         gist_id: ${{ secrets.gist_id }}
         notion_database_id: ${{ secrets.notion_database_id }}
         notion_secret: ${{ secrets.notion_secret }}
-      run: python main_notion.py
+      run: python main_notion.py --report_study_and_revise_db
