@@ -1,9 +1,10 @@
-# Life box: Automated Life Summary Generator 📊
+# Life box: Automated Life Summary Generator 📊 
 
 > Transform your daily Notion logs into beautiful automated reports using GitHub Actions
 
 ## 🌟 Overview
 
+HI!
 Life Logger is a powerful tool that automatically generates comprehensive summaries of your life activities by connecting your Notion database with GitHub Actions. Perfect for individuals who love tracking their daily lives and want meaningful insights without the manual effort.
 
 ### ✨ See the Magic in Action
