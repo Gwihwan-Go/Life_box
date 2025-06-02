@@ -9,7 +9,6 @@ Life Logger is a powerful tool that automatically generates comprehensive summar
 
 ### ✨ See the Magic in Action
 
-
 <div align="center">
   <table>
     <tr>
